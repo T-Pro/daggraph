@@ -1,5 +1,4 @@
 const FS = require('fs');
-const Regularity = require('regularity');
 const DDependency = require('./DDependency.js');
 const Utils = require('./../../utils/utils');
 

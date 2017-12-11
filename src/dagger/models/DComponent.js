@@ -1,5 +1,4 @@
 const FS = require('fs');
-const Regularity = require('regularity');
 const Utils = require('./../../utils/utils');
 
 function DComponent(){
@@ -16,9 +15,6 @@ DComponent.prototype.init = function(path, allModules){
 };
 
 function getModules(file, allModules){
-    // Load modules
-    var regularity = new Regularity();
-
     // Find the modules in the components for java or kotlin
     var modulesRegex = /(\w+)(?:.|::)class,*/g; 
 
@@ -44,9 +40,6 @@ function getModules(file, allModules){
 
 function getInjections(file){
     var result = []; 
-
-    // Load injections
-    var regularity = new Regularity();
 
     // Find all the injections in this component for java or kotlin
     var injectionsRegex = /(?:void|fun)\s*inject\s*\((?:\w+:)?(?:\s*)?(\w*)/g;
