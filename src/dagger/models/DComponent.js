@@ -18,7 +18,9 @@ DComponent.prototype.init = function(path, allModules){
 function getModules(file, allModules){
     // Load modules
     var regularity = new Regularity();
-    var modulesRegex = /(\w+)\.class,*/g;
+
+    // Find the modules in the components for java or kotlin
+    var modulesRegex = /(\w+)(?:.|::)class,*/g; 
 
     // For each module specified in the component, try to find it in the loaded modules
     var moduleMatches = file.match(modulesRegex);
@@ -45,18 +47,16 @@ function getInjections(file){
 
     // Load injections
     var regularity = new Regularity();
-    var injectionsRegex = regularity
-        .then("inject(")
-        .oneOrMore("alphanumeric")
-        .global()
-        .multiline()
-        .done();
+
+    // Find all the injections in this component for java or kotlin
+    var injectionsRegex = /(?:void|fun)\s*inject\s*\((?:\w+:)?(?:\s*)?(\w*)/g;
 
     var matches = file.match(injectionsRegex);
     if (matches != null) {
         matches.forEach(element => {
-            var injection = element.split('(')[1];
-            result.push(injection);
+            while ((array = injectionsRegex.exec(element)) !== null) {
+                result.push(array[1]);
+            }
         });
     }
     return result;
